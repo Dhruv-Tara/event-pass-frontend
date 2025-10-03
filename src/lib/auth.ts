@@ -59,11 +59,10 @@ export class AuthAPI {
 
   static async logout(): Promise<void> {
     try {
-
+      const token = localStorage.getItem('authToken');
+      
       localStorage.removeItem('authToken');
       
-
-      const token = localStorage.getItem('authToken');
       if (token) {
         await fetch(`${this.baseUrl}/api/auth/logout`, {
           method: 'POST',

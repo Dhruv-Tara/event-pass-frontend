@@ -7,12 +7,13 @@ export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [logoError, setLogoError] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -20,7 +21,7 @@ export default function Home() {
     }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
@@ -43,7 +44,24 @@ export default function Home() {
       <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <Image src="/logo.png" alt="Logo" width={120} height={120} />
+            <div className="flex items-center p-6">
+              {!logoError ? (
+                <Image
+                  src="/logo.png"
+                  alt="Evynt Logo"
+                  width={120}
+                  height={120}
+                  className="h-12 w-auto"
+                  onError={() => {
+                    console.error("Logo failed to load, falling back to text");
+                    setLogoError(true);
+                  }}
+                  priority
+                />
+              ) : (
+                <h1 className="text-2xl font-bold text-gray-900">Evynt</h1>
+              )}
+            </div>
             <button
               onClick={() => setIsLoginOpen(true)}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all hover:shadow-lg hover:scale-105"
@@ -54,7 +72,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-5xl sm:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Seamless Event
